@@ -18,7 +18,7 @@ with open(os.path.join(BASE_DIR, "results", "artifacts", "label_encoder.pkl"), "
     le = pickle.load(f)
 
 # SavedModel load dari foldernya, bukan file .pb langsung
-model = tf.saved_model.load(os.path.join(BASE_DIR, "results", "best_model"))
+model = tf.saved_model.load(os.path.join(BASE_DIR, "results","best_model"))
 infer = model.signatures["serving_default"]
 
 
@@ -31,30 +31,15 @@ def predict(text: str) -> dict:
     padded = pad_sequences(seq, maxlen=MAX_LENGTH, padding="post", truncating="post")
     tensor = tf.constant(padded, dtype=tf.int32)
 
+
     output = infer(tensor)
 
-    # Debug: print semua key dan shape-nya
-    for key, val in output.items():
-        print(f"Key: {key}, Shape: {val.shape}, Sample: {val.numpy()}")
+    output_keys = list(output.keys())
+    print("Output keys:", output_keys)  
 
-    # Identifikasi output berdasarkan shape, BUKAN urutan key
-    # pred_emotion → shape [batch, num_classes] misal (1, 3)
-    # pred_healing → shape [batch, 1]           misal (1, 1)
-    pred_emotion = None
-    pred_healing = None
-
-    for key, val in output.items():
-        shape = val.shape
-        if len(shape) == 2 and shape[1] > 1:    # [batch, num_classes] → emotion
-            pred_emotion = val.numpy()
-        elif len(shape) == 2 and shape[1] == 1: # [batch, 1] → healing score
-            pred_healing = val.numpy()
-
-    if pred_emotion is None or pred_healing is None:
-        raise ValueError(
-            f"Tidak bisa identify output. Keys: {list(output.keys())}, "
-            f"Shapes: {[str(v.shape) for v in output.values()]}"
-        )
+    
+    pred_emotion  = output[output_keys[0]].numpy()
+    pred_healing  = output[output_keys[1]].numpy()
 
     probs = pred_emotion[0]
     idx   = int(np.argmax(probs))

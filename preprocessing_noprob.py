@@ -1,9 +1,7 @@
 import re
 import pandas as pd
 
-# ==================================================
 # 1. DICTIONARY & REGEX SETUP (Global Variables)
-# ==================================================
 CONTRACTIONS_DICT = {
     # I (dengan apostrof)
     "i'm"       : "i am",
@@ -165,9 +163,7 @@ CONTRACTIONS_PATTERN = re.compile(
     re.IGNORECASE
 )
 
-# ==================================================
 # 2. CORE FUNCTIONS (Siap di-import ke Notebook lain)
-# ==================================================
 def expand_contractions(text):
     """Fungsi helper untuk menjabarkan singkatan bahasa Inggris."""
     def replace(match):
@@ -190,9 +186,7 @@ def clean_text(text):
     text = re.sub(r"\s+", " ", text).strip()     # rapikan spasi
     return text
 
-# ==================================================
 # 3. DATASET PIPELINE (Opsional / Helper untuk Batch)
-# ==================================================
 def assess_data(df):
     """Mencetak info duplikat dan missing values."""
     print("\n" + "=" * 50)
@@ -218,9 +212,7 @@ def clean_data(df):
     df_clean["text_clean"] = df_clean["text"].apply(clean_text)
     return df_clean
 
-# ==================================================
 # 4. EXECUTABLE BLOCK (Hanya jalan jika file ini di-run langsung)
-# ==================================================
 if __name__ == "__main__":
     # Bagian ini TIDAK AKAN JALAN jika kamu cuma melakukan `import preprocessing` di notebook lain.
     # Bagian ini hanya jalan jika kamu mengeksekusi file ini langsung di terminal (python preprocessing.py)

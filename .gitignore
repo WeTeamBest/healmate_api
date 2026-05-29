@@ -22,3 +22,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+!results/
+!results/
+!results/**

@@ -16,6 +16,7 @@ class PredictRequest(BaseModel):
 
 class PredictResponse(BaseModel):
     text_original : str
+    text_english  : str  
     text_clean    : str
     emotion       : str
     confidence    : float
