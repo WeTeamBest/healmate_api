@@ -7,3 +7,4 @@ scikit-learn
 pandas
 tf_keras
 deep-translator
+google-generativeai

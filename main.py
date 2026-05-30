@@ -22,6 +22,8 @@ class PredictResponse(BaseModel):
     confidence    : float
     all_emotions  : dict
     healing_score : float
+    counselor_response: str
+    activity_suggestions: list[str]
 
 
 # ── Endpoint ────────────────────────────────────────────────
