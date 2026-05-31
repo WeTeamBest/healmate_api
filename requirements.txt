@@ -8,3 +8,4 @@ pandas
 tf_keras
 deep-translator
 google-generativeai
+python-dotenv

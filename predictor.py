@@ -7,13 +7,17 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from preprocessing_noprob import clean_text
 import google.generativeai as genai
+# from dotenv import load_dotenv
+
+# load_dotenv()
+# print(f"[DEBUG] API KEY: {os.getenv('GEMINI_API_KEY', 'TIDAK TERBACA')}")
 
 MAX_LENGTH = 200
 
 # ── Konfigurasi Gemini ──────────────────────────────────────
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AQ.Ab8RN6LWjb9nVbt1pYqx6KNTLymv5Fu907YVzCIhyErCnpMuHg")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AQ.Ab8RN6LWjb9nVbt1pYqx6KNTLymv5Fu907YVzCIhyErCnpMuH")
 genai.configure(api_key=GEMINI_API_KEY)
-gemini_model = genai.GenerativeModel("gemini-3.1-flash")
+gemini_model = genai.GenerativeModel("gemini-2.0-flash")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -94,7 +98,8 @@ Jangan sebut label emosi secara eksplisit. Jangan gunakan bullet point."""
         resp = gemini_model.generate_content(prompt)
         return resp.text.strip()
     except Exception as e:
-        return f"Sepertinya kamu sedang menanggung sesuatu yang berat. Aku di sini bersamamu. 💙"
+        print(f"[Gemini ERROR] {e}")   
+        return "Sepertinya kamu sedang menanggung sesuatu yang berat. Aku di sini bersamamu. 💙"
 
 
 def get_activity_suggestions(emotion: str, healing_score: float) -> list[str]:
